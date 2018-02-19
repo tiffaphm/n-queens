@@ -18,7 +18,7 @@
 window.findNRooksSolution = function(n) {
   var solution = [];
   var newBoard = new Board({'n': n});
-  
+
   for (var i = 0; i < n; i++) {
     newBoard.togglePiece(i, i);
     var row = newBoard.get(i);
@@ -37,23 +37,23 @@ window.countNRooksSolutions = function(n) {
   var countSolutions = function(row) {
     if (n === row) {
       solutions++;
-      return;  
+      return;
     }
-    
+
     for (var i = 0; i < n; i++) {
       newBoard.togglePiece(row, i);
-      
+
       if (!newBoard.hasAnyRooksConflicts()) {
         countSolutions(row + 1);
-      } 
+      }
       newBoard.togglePiece(row, i);
     }
-    
+
   };
 
   countSolutions(0);
 
-  // console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution)); 
+  // console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   console.log('Number of solutions for ' + n + ' rooks:', solutions);
   return solutions;
 };
@@ -64,16 +64,20 @@ window.findNQueensSolution = function(n) {
   var newBoard = new Board({'n': n});
 
   var placeQueens = function(row) {
+    if (row === n) {
+      return;
+    }
+
     for (var c = 0; c < n; c++) {
       newBoard.togglePiece(row, c);
-      
+
       if (!newBoard.hasAnyQueensConflicts()) {
         placeQueens(row + 1);
-      } 
-      newBoard.togglePiece(c);
+      }
+      newBoard.togglePiece(row, c);
     }
   };
-  
+
   solution = newBoard.rows();
 
   placeQueens(0);
@@ -92,17 +96,17 @@ window.countNQueensSolutions = function(n) {
     if (n === row) {
       solutions++;
       // console.log(JSON.stringify(newBoard.rows()));
-      return;  
+      return;
     }
-    
+
     for (var i = 0; i < n; i++) {
       newBoard.togglePiece(row, i);
       if (!newBoard.hasAnyQueenConflictsOn(row, i)) {
         countSolutions(row + 1);
-      } 
+      }
       newBoard.togglePiece(row, i);
     }
-    
+
   };
 
   countSolutions(0);
